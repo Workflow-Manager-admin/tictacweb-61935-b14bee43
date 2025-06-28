@@ -1,0 +1,184 @@
+*/* Custom Minimalist Styling for Tic Tac Toe */
+
+:root {
+  /* Provided Color Palette */
+  --primary: #008080;
+  --accent: #ff9800;
+  --secondary: #975959;
+  --bg-light: #fff;
+  --border: #e9ecef;
+  --win-bg: #e6f6f6;
+  --draw-bg: #fff9ee;
+  --active: #f3f3f3;
+  --shadow: 0px 8px 32px 0px rgba(0,0,0,0.07);
+  --board-size: 350px;
+  --board-size-mobile: 95vw;
+  --square-size: 33.3333%;
+}
+
+body, .ttt-app {
+  background: var(--bg-light);
+  color: var(--primary);
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', Arial, Helvetica, sans-serif;
+}
+.ttt-app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding-top: 4vh;
+}
+
+.ttt-title {
+  font-size: 2.1rem;
+  font-weight: 700;
+  margin: 1.2rem 0 0.3rem 0;
+  letter-spacing: 1.5px;
+  color: var(--primary);
+  text-align: center;
+}
+.ttt-status {
+  font-size: 1.28rem;
+  margin-bottom: 1.2rem;
+  min-height: 1.8em;
+  color: var(--secondary);
+  font-weight: 500;
+  text-align: center;
+}
+
+.primary { color: var(--primary); font-weight: 700; }
+.accent  { color: var(--accent); font-weight: 700; }
+
+.ttt-board-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.ttt-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: var(--board-size);
+  height: var(--board-size);
+  background: var(--bg-light);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  border: 2px solid var(--primary);
+  aspect-ratio: 1;
+  margin: 0 auto;
+  overflow: hidden;
+}
+@media (max-width: 500px) {
+  .ttt-board {
+    width: var(--board-size-mobile);
+    height: var(--board-size-mobile);
+  }
+}
+
+.ttt-square {
+  width: 100%;
+  height: 100%;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: transparent;
+  border: none;
+  outline: none;
+  border-right: 2px solid var(--primary);
+  border-bottom: 2px solid var(--primary);
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+.ttt-square:nth-child(3n) {
+  border-right: none !important;
+}
+.ttt-square:nth-child(n+7) {
+  border-bottom: none !important;
+}
+.ttt-square[disabled],
+.ttt-square:disabled {
+  cursor: default;
+  background: transparent;
+  opacity: 0.65;
+}
+.ttt-square.highlight {
+  background: var(--win-bg);
+  color: var(--accent);
+  border-radius: 6px;
+  transition: background 0.28s, color 0.18s;
+}
+
+.ttt-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.ttt-button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  outline: none;
+  border-radius: 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.4rem 1.12rem;
+  margin: 0;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(34, 50, 50, 0.06);
+  letter-spacing: 0.03em;
+  transition: background 0.18s, color 0.17s, box-shadow 0.2s;
+}
+.ttt-button:hover:not([disabled]):not(.active) {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 8px rgba(255, 152, 0, 0.12);
+}
+.ttt-button.active,
+.ttt-button:active {
+  background: var(--secondary);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(151, 89, 89, 0.12);
+  cursor: default;
+}
+.ttt-button[disabled] { opacity: 0.6; cursor: default; }
+
+.ttt-footer {
+  margin-top: 3.5rem;
+  font-size: 0.95rem;
+  color: var(--secondary);
+  opacity: 0.86;
+  letter-spacing: .01em;
+  text-align: center;
+}
+
+/* Responsive: controls wrap, and footer is always at the bottom. */
+@media (max-width: 600px) {
+  .ttt-board {
+    width: 98vw;
+    height: 98vw;
+    min-width: 0;
+    min-height: 0;
+    max-width: 98vw;
+    max-height: 98vw;
+  }
+  .ttt-controls {
+    gap: 0.3rem;
+  }
+  .ttt-title {
+    font-size: 1.38rem;
+  }
+}
+
+/* Remove existing theme toggle styling from the template if still present */
+.theme-toggle, .App-logo, .App-link, .App-header { display: none !important; }
+
+/* Remove margins from default App */
+.App { min-height: unset; }
