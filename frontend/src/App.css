@@ -1,79 +1,103 @@
-*/* Custom Minimalist Styling for Tic Tac Toe */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
+/* Retro palette customization */
 :root {
-  /* Provided Color Palette */
   --primary: #008080;
   --accent: #ff9800;
   --secondary: #975959;
-  --bg-light: #fff;
-  --border: #e9ecef;
-  --win-bg: #e6f6f6;
-  --draw-bg: #fff9ee;
-  --active: #f3f3f3;
-  --shadow: 0px 8px 32px 0px rgba(0,0,0,0.07);
-  --board-size: 350px;
-  --board-size-mobile: 95vw;
+  --retro-bg: #111f2b;
+  --retro-panel: #232b38;
+  --retro-border: #ffde59;
+  --retro-shadow: 0 0 0 4px #ffde59, 4px 4px 0 8px #000a, 0 0 64px 8px #ff980054;
+  --retro-title-glow: 0 0 12px #ff9800, 0 0 32px #ffde59;
+  --retro-win-bg: #ffde5944;
+  --retro-draw-bg: #70809033;
+  --retro-btn-active: #ff9800;
+  --retro-btn-hover: #21e6c1;
+  --retro-btn-shadow: 4px 4px 0 #222, 0 0 14px #21e6c1cc;
+  --retro-btn-text: #fff;
+  --retro-footer: #fff9ee;
+  --board-size: 370px;
+  --board-size-mobile: 96vw;
   --square-size: 33.3333%;
+  --font-main: 'Press Start 2P', monospace, sans-serif;
 }
 
 body, .ttt-app {
-  background: var(--bg-light);
-  color: var(--primary);
+  background: var(--retro-bg);
   min-height: 100vh;
   margin: 0;
-  font-family: 'Inter', 'Segoe UI', Arial, Helvetica, sans-serif;
+  font-family: var(--font-main);
+  color: var(--accent);
+  letter-spacing: 1.1px;
 }
+
 .ttt-app {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  min-height: 100vh;
-  padding-top: 4vh;
+  padding-top: 3vh;
 }
 
+/* Retro "arcade" title with glow */
 .ttt-title {
-  font-size: 2.1rem;
-  font-weight: 700;
-  margin: 1.2rem 0 0.3rem 0;
-  letter-spacing: 1.5px;
-  color: var(--primary);
-  text-align: center;
-}
-.ttt-status {
-  font-size: 1.28rem;
-  margin-bottom: 1.2rem;
-  min-height: 1.8em;
-  color: var(--secondary);
-  font-weight: 500;
-  text-align: center;
+  font-size: 2.25rem;
+  text-transform: uppercase;
+  font-family: var(--font-main);
+  color: var(--accent);
+  text-shadow: var(--retro-title-glow);
+  margin: 2.2rem 0 0.8rem 0;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg, var(--accent) 10%, var(--primary) 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.primary { color: var(--primary); font-weight: 700; }
-.accent  { color: var(--accent); font-weight: 700; }
+.ttt-status {
+  font-size: 1.11rem;
+  margin-bottom: 1.4rem;
+  min-height: 2.0em;
+  text-align: center;
+  color: #fffdfa;
+  background: var(--retro-panel);
+  border: 3px solid var(--retro-border);
+  border-radius: 10px;
+  box-shadow: var(--retro-shadow);
+  padding: 0.6em 1em 0.6em 1em;
+  font-weight: bold;
+  letter-spacing: 1.1px;
+}
+
+.primary { color: var(--retro-btn-hover); text-shadow: 0 0 6px #21e6c1dd; font-weight: 900;}
+.accent  { color: var(--retro-btn-active); text-shadow: 0 0 6px #ff9800aa; font-weight: 900;}
 
 .ttt-board-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.4rem;
   width: 100%;
 }
 
+/* Retro game board frame */
 .ttt-board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
   width: var(--board-size);
   height: var(--board-size);
-  background: var(--bg-light);
-  border-radius: 18px;
-  box-shadow: var(--shadow);
-  border: 2px solid var(--primary);
+  background: var(--retro-panel);
+  border: 6px solid var(--retro-border);
+  border-radius: 14px;
+  box-shadow: var(--retro-shadow);
+  padding: 0;
   aspect-ratio: 1;
   margin: 0 auto;
   overflow: hidden;
+  z-index: 1;
+  position: relative;
 }
+
 @media (max-width: 500px) {
   .ttt-board {
     width: var(--board-size-mobile);
@@ -84,101 +108,132 @@ body, .ttt-app {
 .ttt-square {
   width: 100%;
   height: 100%;
+  aspect-ratio: 1;
   font-size: 2.2rem;
-  font-weight: 700;
-  color: var(--primary);
-  background: transparent;
-  border: none;
+  color: var(--retro-border);
+  background: var(--retro-bg);
   outline: none;
-  border-right: 2px solid var(--primary);
-  border-bottom: 2px solid var(--primary);
-  cursor: pointer;
+  border: none;
+  padding: 0;
+  margin: 0;
+  border-right: 4px solid var(--retro-border);
+  border-bottom: 4px solid var(--retro-border);
+  font-family: var(--font-main);
+  position: relative;
   transition: background 0.18s, color 0.18s;
+  text-shadow: 0 0 8px #ffde593b, 1px 2px 1px #111;
+  cursor: pointer;
+  z-index: 2;
 }
+
+/* Remove right & bottom border for last squares in row/col for visual effect */
 .ttt-square:nth-child(3n) {
   border-right: none !important;
 }
 .ttt-square:nth-child(n+7) {
   border-bottom: none !important;
 }
+
+/* Retro hover/active feedback */
+.ttt-square:not([disabled]):hover {
+  background: var(--retro-btn-hover);
+  color: #fff;
+  text-shadow: 0 0 12px var(--retro-btn-hover);
+}
+
 .ttt-square[disabled],
 .ttt-square:disabled {
   cursor: default;
-  background: transparent;
-  opacity: 0.65;
+  opacity: 0.6;
+  filter: grayscale(0.25);
 }
+
 .ttt-square.highlight {
-  background: var(--win-bg);
+  background: var(--retro-win-bg);
   color: var(--accent);
+  box-shadow: 0 0 16px 4px var(--retro-border) inset, 0 0 16px 3px var(--accent);
   border-radius: 6px;
-  transition: background 0.28s, color 0.18s;
+  transition: background 0.33s, color 0.14s;
+  text-shadow: 0 0 14px var(--accent), 2px 2px 0 var(--retro-border);
 }
 
 .ttt-controls {
   display: flex;
   justify-content: center;
-  margin-top: 0.5rem;
-  gap: 0.5rem;
+  gap: 1.18rem;
   flex-wrap: wrap;
+  margin-top: -0.65rem;
 }
+
 .ttt-button {
-  background: var(--primary);
-  color: #fff;
-  border: none;
-  outline: none;
-  border-radius: 22px;
+  font-family: var(--font-main);
+  background: var(--retro-btn-active);
+  color: var(--retro-btn-text);
+  border: 4px solid var(--retro-border);
+  border-radius: 11px;
   font-size: 1rem;
-  font-weight: 600;
-  padding: 0.4rem 1.12rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.59rem 1.81rem 0.54rem 1.81rem;
   margin: 0;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(34, 50, 50, 0.06);
-  letter-spacing: 0.03em;
-  transition: background 0.18s, color 0.17s, box-shadow 0.2s;
+  box-shadow: var(--retro-btn-shadow);
+  letter-spacing: 0.08em;
+  transition: background 0.12s, color 0.12s, transform 0.09s, box-shadow 0.14s;
+  outline: none;
+  position: relative;
 }
-.ttt-button:hover:not([disabled]):not(.active) {
-  background: var(--accent);
-  color: #fff;
-  box-shadow: 0 4px 8px rgba(255, 152, 0, 0.12);
+
+.ttt-button:hover:not([disabled]):not(.active),
+.ttt-button:focus:not([disabled]):not(.active) {
+  background: var(--retro-btn-hover);
+  color: var(--retro-btn-text);
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 8px 24px #21e6c166, 0 0 13px #00ffd854;
 }
+
 .ttt-button.active,
 .ttt-button:active {
   background: var(--secondary);
   color: #fff;
-  box-shadow: 0 2px 8px rgba(151, 89, 89, 0.12);
+  border-color: var(--accent);
   cursor: default;
+  transform: scale(0.99);
+  box-shadow: 0 2px 12px #ff980044;
 }
-.ttt-button[disabled] { opacity: 0.6; cursor: default; }
+
+.ttt-button[disabled] {
+  opacity: 0.4;
+  cursor: default;
+  filter: grayscale(0.8);
+}
 
 .ttt-footer {
   margin-top: 3.5rem;
-  font-size: 0.95rem;
-  color: var(--secondary);
-  opacity: 0.86;
-  letter-spacing: .01em;
+  font-size: 1rem;
   text-align: center;
+  color: var(--retro-footer);
+  opacity: 0.89;
+  letter-spacing: 0.06em;
+  text-shadow: 0 1px 8px #000, 0 0 10px #21e6c133;
+  user-select: none;
 }
 
-/* Responsive: controls wrap, and footer is always at the bottom. */
 @media (max-width: 600px) {
   .ttt-board {
-    width: 98vw;
-    height: 98vw;
-    min-width: 0;
-    min-height: 0;
-    max-width: 98vw;
-    max-height: 98vw;
+    width: 96vw;
+    height: 96vw;
   }
   .ttt-controls {
-    gap: 0.3rem;
+    gap: 0.49rem;
+    padding: 0 1vw;
   }
   .ttt-title {
-    font-size: 1.38rem;
+    font-size: 1.29rem;
   }
 }
 
-/* Remove existing theme toggle styling from the template if still present */
-.theme-toggle, .App-logo, .App-link, .App-header { display: none !important; }
-
-/* Remove margins from default App */
-.App { min-height: unset; }
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}

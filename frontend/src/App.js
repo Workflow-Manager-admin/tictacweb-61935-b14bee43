@@ -2,14 +2,6 @@ import React, { useState } from 'react';
 import './App.css';
 
 /**
- * Color palette based on requirements:
- * --primary: #008080 (teal)
- * --accent:  #ff9800 (orange)
- * --secondary: #975959 (muted wine)
- * --background: #fff (light)
- */
-
-/**
  * Returns the winner ('X' or 'O') or 'draw' (if all cells filled and no winner) or null (ongoing)
  * @param {Array} squares - 9-element array representing the board
  * @returns {'X'|'O'|'draw'|null}
@@ -30,33 +22,28 @@ function calculateWinner(squares) {
   return null;
 }
 
-// Simple computer move: pick the first available cell (can be improved)
+// Simple computer move: pick the best (win/block/center/else random)
 function getComputerMove(squares) {
-  // Try to win, block, otherwise pick first
-  // 1. Can AI win?
   for (let i = 0; i < 9; i++) {
     if (!squares[i]) {
       const copy = squares.slice();
       copy[i] = 'O';
-      if (calculateWinner(copy) === 'O') return i; // win
+      if (calculateWinner(copy) === 'O') return i;
     }
   }
-  // 2. Can block opponent's win?
   for (let i = 0; i < 9; i++) {
     if (!squares[i]) {
       const copy = squares.slice();
       copy[i] = 'X';
-      if (calculateWinner(copy) === 'X') return i; // block
+      if (calculateWinner(copy) === 'X') return i;
     }
   }
-  // 3. Take center if available
   if (!squares[4]) return 4;
-  // 4. Take random available edge/corner
   const emptyIndices = squares.map((v, i) => v ? null : i).filter(i => i !== null);
   return emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
 }
 
-// Square component
+// Square component, with retro effect
 function Square({ value, onClick, highlight }) {
   return (
     <button
@@ -65,13 +52,19 @@ function Square({ value, onClick, highlight }) {
       aria-label={value || "empty"}
       disabled={!!value}
       tabIndex={value ? -1 : 0}
+      style={
+        value === "X"
+          ? { color: "var(--primary)", textShadow: "0 2px 6px #21e6c1", fontWeight: 900 }
+          : value === "O"
+          ? { color: "var(--accent)", textShadow: "0 2px 6px #ff9800", fontWeight: 900 }
+          : {}
+      }
     >
-      {value}
+      {value ? (value === "X" ? "X" : "O") : ""}
     </button>
   );
 }
 
-// Main Game component
 // PUBLIC_INTERFACE
 function App() {
   // 'local' for two-player, 'single' for vs AI
@@ -83,7 +76,7 @@ function App() {
   // Winner: 'X', 'O', 'draw', or null
   const winner = calculateWinner(squares);
 
-  // Highlight the winning combination for UI (not required but enhances UX)
+  // Highlight the winning combination for UI (retro blinking border not required for retro)
   function getWinningLine(squares) {
     const lines = [
       [0, 1, 2], [3, 4, 5], [6, 7, 8],
@@ -99,7 +92,6 @@ function App() {
   }
   const winningLine = winner && winner !== 'draw' ? getWinningLine(squares) : [];
 
-  // Handle click on board
   // PUBLIC_INTERFACE
   function handleClick(i) {
     if (squares[i] || winner) return;
@@ -109,7 +101,7 @@ function App() {
     setXIsNext(!xIsNext);
   }
 
-  // After each move, if in 'single' mode and computer's turn, make computer move
+  // Effect: after player's move, let computer play in 'single' mode
   React.useEffect(() => {
     if (
       mode === 'single' &&
@@ -120,15 +112,13 @@ function App() {
       if (computerMove !== undefined) {
         const nextSquares = squares.slice();
         nextSquares[computerMove] = 'O';
-        // Delay for natural feel
         const timeout = setTimeout(() => {
           setSquares(nextSquares);
-          setXIsNext(true); // Human's turn next
-        }, 400);
+          setXIsNext(true);
+        }, 430);
         return () => clearTimeout(timeout);
       }
     }
-  // Intentionally depend on 'squares' and 'xIsNext', 'mode', and 'winner'
   }, [squares, xIsNext, mode, winner]);
 
   // PUBLIC_INTERFACE
@@ -147,25 +137,38 @@ function App() {
   // Status banner
   let status;
   if (winner === 'draw') {
-    status = <>It's a <span className="accent">draw</span>!</>;
+    status = <>NO WINNER – <span className="accent">DRAW</span>!</>;
   } else if (winner) {
-    status = <><span className={winner === 'X' ? "primary" : "accent"}>{winner}</span> wins!</>;
-  } else {
     status = <>
-      {mode === 'single'
-        ? (xIsNext ? "Your turn (X)" : "AI's turn (O)")
-        : (
-          <>
-            Next: <span className={xIsNext ? "primary" : "accent"}>{xIsNext ? 'X' : 'O'}</span>
-          </>
-        )
-      }
+      WINNER:&nbsp;
+      <span className={winner === 'X' ? "primary" : "accent"}>
+        {winner === "X" ? "PLAYER X" : (mode === "single" && winner === "O" ? "AI (O)" : "PLAYER O")}
+      </span>
+      &nbsp;🎉
     </>;
+  } else {
+    status = (
+      <>
+        {
+          mode === 'single'
+            ? (xIsNext
+              ? <><span className="primary">Your turn</span> <small style={{ color: "#708090" }}>(X)</small></>
+              : <><span className="accent">AI is thinking…</span> <small style={{ color: "#708090" }}>(O)</small></>)
+            : (
+              <>
+                NEXT: <span className={xIsNext ? "primary" : "accent"}>
+                  {xIsNext ? 'PLAYER X' : 'PLAYER O'}
+                </span>
+              </>
+            )
+        }
+      </>
+    );
   }
 
   return (
     <div className="ttt-app">
-      <h1 className="ttt-title">Tic Tac Toe</h1>
+      <h1 className="ttt-title">TIC TAC TOE</h1>
       <div className="ttt-status">{status}</div>
       <div className="ttt-board-container">
         <div className="ttt-board" role="grid" aria-label="Tic Tac Toe Board">
@@ -205,7 +208,7 @@ function App() {
         </button>
       </div>
       <footer className="ttt-footer">
-        <span>by KAVIA – Minimalistic React Web Game</span>
+        <span>RETRO T3 – Powered by React • Inspired by Arcade Classics</span>
       </footer>
     </div>
   );
